@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.nio.charset.Charset;
 
 public class FileUtil {
 
@@ -22,16 +23,14 @@ public class FileUtil {
         }
     }
 
-    public static BufferedReader createFileStream(String file_part) throws FileNotFoundException {
+    public static BufferedReader createFileStream(String file_part) throws Exception {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(file_part), getFileEncoding(file_part)));
-        } catch (FileNotFoundException e) {
+                    new InputStreamReader(new FileInputStream(file_part), Charset.forName(getFileEncoding(file_part))));
+        } catch (IOException e) {
             logger.info("createFileStream throw FileNotFoundException : " + e.getMessage());
             throw e;
-        } catch (UnsupportedEncodingException e) {
-            logger.info("createFileStream throw UnsupportedEncodingException : " + e.getMessage());
         }
 
         return reader;

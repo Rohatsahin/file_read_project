@@ -14,5 +14,4 @@ public class ProcessUtilTest {
         assertThat(ProcessUtil.process(test, 0), equalTo("word is even : gnirts"));
         assertThat(ProcessUtil.process(test, 1), equalTo("word is odd : test"));
     }
-
 }

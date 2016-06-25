@@ -3,9 +3,12 @@ package com.app.util;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
@@ -19,6 +22,9 @@ public class FileUtilTest {
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Before
     public void setUp() throws IOException {
         File file = temporaryFolder.newFile("test.pdf");
@@ -26,39 +32,41 @@ public class FileUtilTest {
     }
 
     @Test
-    public void shouldReturnTrueIfFileExist() throws IOException{
+    public void shouldReturnTrueIfFileExist() {
 
         assertTrue(FileUtil.checkFileExists(file_part));
     }
 
     @Test
-    public void shouldReturnFalseIfFileNotExist(){
+    public void shouldReturnFalseIfFileNotExist() {
 
         assertFalse(FileUtil.checkFileExists(dummy_part));
     }
 
     @Test
-    public void shouldCreateFileStreamIFileExists() throws FileNotFoundException, UnsupportedEncodingException {
+    public void shouldCreateFileStreamIFileExists() throws Exception {
 
         assertNotNull(FileUtil.createFileStream(file_part));
     }
 
-    @Test(expected =FileNotFoundException.class)
-    public void shouldReturnNullWhenFileNotExist() throws FileNotFoundException {
+    @Test
+    public void shouldReturnNullWhenFileNotExist() throws Exception {
+        expectedException.expect(FileNotFoundException.class);
 
         assertNull(FileUtil.createFileStream(dummy_part));
     }
 
-    @Test(expected =FileNotFoundException.class)
-    public void shouldReturnFileNotFoundException() throws FileNotFoundException {
+    @Test
+    public void shouldReturnFileNotFoundException() throws Exception {
+        expectedException.expect(FileNotFoundException.class);
 
         FileUtil.createFileStream(dummy_part);
     }
 
     @Test
-    public void shouldReturnUTF8FileEncoding(){
+    public void shouldReturnUTF8FileEncoding() {
 
-        assertThat(FileUtil.getFileEncoding(file_part),equalTo("UTF8"));
+        assertThat(FileUtil.getFileEncoding(file_part), equalTo("UTF8"));
     }
 
 }
