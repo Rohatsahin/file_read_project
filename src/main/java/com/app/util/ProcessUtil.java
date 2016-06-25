@@ -10,15 +10,21 @@ public class ProcessUtil {
 
     public static void processByline(String file_line) {
 
+        logger.debug("process start for given string: " +file_line);
+
         String line[] = file_line.split("\\s+");
 
         for (int i = 0; i < line.length; i++) {
 
-            if (i % 2 == 0) {
-                logger.info("word is even :  " + line[i]);
-            } else {
-                logger.info("word is odd : " + new StringBuilder(line[i]).reverse().toString());
-            }
+            System.out.println(process(line, i));
+        }
+    }
+
+    public static String process(String[] line, int i) {
+        if (i % 2 == 0) {
+            return "word is even : " + new StringBuilder(line[i]).reverse().toString();
+        } else {
+            return "word is odd : " + line[i];
         }
     }
 

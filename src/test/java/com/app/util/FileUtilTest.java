@@ -5,10 +5,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 
 public class FileUtilTest {
@@ -39,15 +38,27 @@ public class FileUtilTest {
     }
 
     @Test
-    public void shouldReturnNullWhenFileNotExist(){
+    public void shouldCreateFileStreamIFileExists() throws FileNotFoundException, UnsupportedEncodingException {
+
+        assertNotNull(FileUtil.createFileStream(file_part));
+    }
+
+    @Test(expected =FileNotFoundException.class)
+    public void shouldReturnNullWhenFileNotExist() throws FileNotFoundException {
 
         assertNull(FileUtil.createFileStream(dummy_part));
     }
 
-    @Test(expected = FileNotFoundException.class)
-    public void shouldReturnFileNotFoundException(){
+    @Test(expected =FileNotFoundException.class)
+    public void shouldReturnFileNotFoundException() throws FileNotFoundException {
 
-        FileUtil.createFileStream(file_part);
+        FileUtil.createFileStream(dummy_part);
+    }
+
+    @Test
+    public void shouldReturnUTF8FileEncoding(){
+
+        assertThat(FileUtil.getFileEncoding(file_part),equalTo("UTF8"));
     }
 
 }

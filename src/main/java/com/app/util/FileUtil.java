@@ -1,8 +1,8 @@
 package com.app.util;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.*;
 
 public class FileUtil {
@@ -22,13 +22,16 @@ public class FileUtil {
         }
     }
 
-    public static BufferedReader createFileStream(String file_part) {
+    public static BufferedReader createFileStream(String file_part) throws FileNotFoundException {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
                     new InputStreamReader(new FileInputStream(file_part), getFileEncoding(file_part)));
-        } catch (IOException e) {
-            logger.info("createFileStream throw exception : " + e);
+        } catch (FileNotFoundException e) {
+            logger.info("createFileStream throw FileNotFoundException : " + e.getMessage());
+            throw e;
+        } catch (UnsupportedEncodingException e) {
+            logger.info("createFileStream throw UnsupportedEncodingException : " + e.getMessage());
         }
 
         return reader;
@@ -41,7 +44,7 @@ public class FileUtil {
             encoding = new InputStreamReader(fileInputStream).getEncoding();
             fileInputStream.close();
         } catch (IOException e) {
-            logger.info("getFileEncoding method throw exception : " + e);
+            logger.info("getFileEncoding method throw IOException : " + e.getMessage());
         }
 
         return encoding;
