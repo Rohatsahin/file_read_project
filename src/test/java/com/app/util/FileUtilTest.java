@@ -17,7 +17,7 @@ public class FileUtilTest {
 
     private String file_part;
 
-    private String dummy_part = "D:\\proje\\src\\test\\resources\\Rohat Şahin--CV.docx";
+    private String dummy_part = "D:\\proje\\src\\test\\resources\\test.docx";
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -64,9 +64,17 @@ public class FileUtilTest {
     }
 
     @Test
-    public void shouldReturnUTF8FileEncoding() {
+    public void shouldReturnUTF8FileEncoding() throws Exception {
 
         assertThat(FileUtil.getFileEncoding(file_part), equalTo("UTF8"));
+    }
+
+    @Test
+    public void shouldReturnFileNotFountExceptionForGivenDummyPart() throws Exception {
+
+        expectedException.expect(FileNotFoundException.class);
+
+        assertNull(FileUtil.getFileEncoding(dummy_part));
     }
 
 }

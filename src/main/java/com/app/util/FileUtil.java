@@ -36,14 +36,15 @@ public class FileUtil {
         return reader;
     }
 
-    public static String getFileEncoding(String file_part) {
-        String encoding = " ";
+    public static String getFileEncoding(String file_part) throws IOException {
+        String encoding = null;
         try {
             FileInputStream fileInputStream = new FileInputStream(file_part);
             encoding = new InputStreamReader(fileInputStream).getEncoding();
             fileInputStream.close();
         } catch (IOException e) {
             logger.info("getFileEncoding method throw IOException : " + e.getMessage());
+            throw e;
         }
 
         return encoding;
